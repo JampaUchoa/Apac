@@ -25,7 +25,10 @@ microregions = [
 macroregions.each_with_index do |m, i|
     mac = Macroregion.create(name: m, state: pernambuco)
     microregions[i].each do |mi|
-        Microregion.create(name: mi, macroregion: mac) 
+        mic = Microregion.create(name: mi, macroregion: mac) 
+        4.times do |st|
+            Station.create(name: "#{mi} - #{st}", microregion: mic)
+        end
     end
 end
 

@@ -1,0 +1,8 @@
+.stations{
+    height: 200px;
+    overflow-y: scroll;
+    border: 1px solid;
+}
+.row{
+    margin-bottom: 10px;
+}
