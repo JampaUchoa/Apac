@@ -1,3 +1,5 @@
+"use strict";
+
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope, $http) {
 
@@ -5,6 +7,7 @@ app.controller('myCtrl', function($scope, $http) {
   $scope.microregions = [];
   $scope.stations = [];
   $scope.equipments = [];
+  $scope.stationsSelected = [];
 
   $http.get("http://localhost:3000/states")
   .then(function(response) {
@@ -31,25 +34,41 @@ app.controller('myCtrl', function($scope, $http) {
       $scope.equipments = response.data;
   });
 
+  $http.get("http://localhost:3000/collections")
+  .then(function(response) {
+      $scope.collections = response.data;
+  });
+
   $scope.form = {
-    stations: [],
     stationsIds: [],
     equipment: 0,
     day: 0,
     value: 0,
   }
 
-  $scope.sendData = function(){
+  $scope.sendData = function() {
+    $scope.form.stationsIds = ($scope.stations.filter(st => st.selected)).map(st => st.id);
+
     $http.post('http://localhost:3000/collection', $scope.form)
-    .then(function(response) {
-        console.log(response);
+    .then(function() {
+        $http.get("http://localhost:3000/collections")
+        .then(function(response) {
+            $scope.collections = response.data;
+        });
     });
   }
 
-  $scope.addStation = function(st){
-    $scope.form.stations.push(st);
-    $scope.form.stationsIds.push(st.id);
-    st.hide = true;
+  $scope.toggleSelection = function(st) {
+     console.log(1)
+    st.selected = !st.selected;
   }
 
+  $scope.getStation = function(id) {
+    if ($scope.stations) return $scope.stations.filter(st => st.id == id)[0].name;
+  }
+
+  $scope.getEquipment = function(id) {
+    if ($scope.equipments) return $scope.equipments.filter(eq => eq.id == id)[0].name;
+  }
+  
 });

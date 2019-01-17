@@ -1,8 +1,31 @@
+body{
+    margin-top: 50px;
+}
+
 .stations{
     height: 200px;
-    overflow-y: scroll;
-    border: 1px solid;
+    overflow-y: auto;
+    border: 1px solid #DEE1E5;
 }
 .row{
     margin-bottom: 10px;
+}
+
+.station{
+    cursor: pointer;
+    padding: 4px 10px;
+}
+
+h5{
+    text-align: center;
+}
+
+.station:hover{
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.input {
+    margin: 0 0 10px;
 }

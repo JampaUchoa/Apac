@@ -6,6 +6,6 @@ Rails.application.routes.draw do
   get '/microregion/:id', to: 'collections#stations'
   get '/equipments', to: 'collections#equipments'
   post '/collection', to: 'collections#create'
-  get '/collections', to: 'collections#index'
+  get '/collections', to: 'collections#collections'
 
 end

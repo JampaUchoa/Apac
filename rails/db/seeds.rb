@@ -6,10 +6,12 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+Collection.delete_all
+Equipment.delete_all
+Station.delete_all
 Microregion.delete_all
 Macroregion.delete_all
 State.delete_all
-Equipment.delete_all
 
 pernambuco = State.create(name: 'Pernambuco')
 macroregions = ["Sertão", "São Francisco", "Agreste", "Zona da Mata", "Metropolitana"]
@@ -26,14 +28,11 @@ macroregions.each_with_index do |m, i|
     mac = Macroregion.create(name: m, state: pernambuco)
     microregions[i].each do |mi|
         mic = Microregion.create(name: mi, macroregion: mac) 
-        4.times do |st|
-            Station.create(name: "#{mi} - #{st}", microregion: mic)
+        3.times do |st|
+            Station.create(name: "#{mi} - #{st+1}", microregion: mic)
         end
     end
 end
 
-
-
-
-Equipment.create([{ name: 'Regua' }, { name: 'Pluviometro' }]) 
+Equipment.create([{ name: 'Régua' }, { name: 'Pluviômetro' }]) 
 

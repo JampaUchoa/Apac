@@ -1,30 +1,30 @@
 class CollectionsController < ApplicationController
 
   def states
-    @collections = State.all
-    render json: @collections
+    @collections = 
+    render json: State.all
   end
 
   def macroregions
-    @collections = Macroregion.all
-    render json: @collections
+    render json: Macroregion.all
   end
 
   def microregions
-    @collections = Microregion.all
-    render json: @collections
+    render json: Microregion.all
   end
 
   def stations
-    @collections = Station.all
-    render json: @collections
+    render json: Station.all
   end
 
   def equipments
-    @collections = Equipment.all
-    render json: @collections
+    render json: Equipment.all
   end
 
+  def collections
+    render json: Collection.all
+  end
+  
   def create
     ids = params[:stationsIds]
     collections = []

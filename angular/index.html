@@ -10,9 +10,7 @@
     <link rel="stylesheet" href="./index.css">
 
     <body>
-
         <div ng-app="myApp" ng-controller="myCtrl" class="container"> 
-
             <form>
                 <h1> Coleta Manual de dados </h1>
 
@@ -28,7 +26,7 @@
                     <div class="select col-md-4">
                         <label> Macroregião</label>
                         <br>
-                        <select class="custom-select">
+                        <select class="custom-select" ng-model="search.macroregion_id">
                             <option value="" selected="selected"></option>
                             <option ng-repeat="mac in macroregions" value="{{mac.id}}">{{mac.name}}</option>
                         </select>
@@ -36,65 +34,85 @@
 
                     <div class="select col-md-4">
                         <label> Microregião </label>
-                        <select class="custom-select">
+                        <select class="custom-select" ng-model="searchStation.microregion_id">
                             <option value="" selected="selected"></option>
-                            <option ng-repeat="mic in microregions" value="{{mac.id}}">{{mic.name}}</option>
+                            <option ng-repeat="mic in microregions | filter:search" value="{{mic.id}}">{{mic.name}}</option>
                         </select>
                     </div>
 
                 </div>
                 
-                <br>
+                <hr>
 
                 <div class="row">
 
                     <div class="col-md-8">
 
                         <div class="row">
-                            <div class="col-md-5">
-                                <h4>Estações selecionadas</h4>
+                            <div class="col-md-6">
+                                <h5> Estações </h5>
                                 <div class="stations">
-                                    <div ng-repeat="st in form.stations" >{{st.name}}</div>
+                                    <div class="station" ng-repeat="st in stations" ng-click="toggleSelection(st)" ng-show="!st.selected">{{st.name}}</div>
                                 </div>
                             </div>
-                            <div class="col-md-2">
-                            </div>
-                            <div class="col-md-5">
-                                <h4>Estações</h4>
+                            <div class="col-md-6">
+                                <h5>Estações selecionadas</h5>
                                 <div class="stations">
-                                    <div ng-click="addStation(st)" ng-hide="st.hide" ng-repeat="st in stations" >{{st.name}}</div>
+                                    <div class="station" ng-repeat="st in stations" ng-click="toggleSelection(st)" ng-show="st.selected" >{{st.name}}</div>
                                 </div>
                             </div>
                         </div>
 
                     </div>
+                        <div class="col-md-4">
 
-                    <div class="col-md-4">
+                            <div class="select input">
+                                <label> Equipamento </label>
+                                <select class="custom-select" ng-model="form.equipment" required>
+                                    <option ng-repeat="eq in equipments" value="{{eq.id}}">{{eq.name}}</option>
+                                </select>
+                            </div>
 
-                        <div class="select">
-                            <label> Equipamento </label>
-                            <select class="custom-select" ng-model="form.equipment">
-                                <option ng-repeat="eq in equipments" value="{{eq.id}}">{{eq.name}}</option>
-                            </select>
+                            <div class="input">
+                                <label> Valor </label>
+                                <input type="number" min="0" ng-model="form.value" class="form-control" required/> 
+                            </div>
+
+                            <div class="input">
+                                <label> Dia </label>
+                                <input type="date" ng-model="form.day" class="form-control" max="1979-12-31" required/> 
+                            </div>
+
                         </div>
-
-                        <div class="input">
-                            <label> Valor </label>
-                            <input type="number" ng-model="form.value" class="form-control"/> 
-                        </div>
-
-                        <div class="input">
-                            <label> Dia </label>
-                            <input type="date" ng-model="form.day" class="form-control"/> 
-                        </div>
-
-                    </div>
-
                 </div>
 
+                <div class="row">
+                    <input type="submit" class="btn btn-primary btn-lg btn-block" ng-click="sendData()">  
+                </div>
             </form>
+
             <div class="row">
-                <div class="btn btn-primary btn-lg btn-block" ng-click="sendData()"> Enviar </div>
+                <h3> Coletas Cadastradas </h3>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Estação</th>
+                        <th scope="col">Equipamento</th>
+                        <th scope="col">Valor</th>
+                        <th scope="col">Dia</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="cl in collections">
+                        <th scope="row">{{cl.id}}</th>
+                        <td>{{getStation(cl.station_id)}}</td>
+                        <td>{{getEquipment(cl.equipment_id)}}</td>
+                        <td>{{cl.value}}</td>
+                        <td>{{cl.day | date:"dd/MM/yyyy"}}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
